@@ -4,7 +4,7 @@ namespace Domain;
 
 class BaseAction
 {
-    private array $data = [];
+    protected array $data = [];
 
     public function fromData(array $data)
     {
