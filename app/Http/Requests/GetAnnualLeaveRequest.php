@@ -13,7 +13,7 @@ class GetAnnualLeaveRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class GetAnnualLeaveRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "job_start_date" => ["required", "string"],
+            "days_taken_before" => ["required", "integer"],
         ];
     }
 }
