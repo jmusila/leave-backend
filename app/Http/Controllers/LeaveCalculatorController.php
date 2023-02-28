@@ -10,6 +10,10 @@ class LeaveCalculatorController extends Controller
 {
     public function annualLeaveCalculator(GetAnnualLeaveRequest $request, CalculateAnnualLeave $calculateAnnualLeave)
     {
-        dd($calculateAnnualLeave->fromData($request->validated())->totalLeaveDaysAfterDeduction());
+        $totalDaysAfterDeduction = $calculateAnnualLeave->fromData($request->validated())->totalLeaveDaysAfterDeduction();
+
+        $totalDaysTaken = $calculateAnnualLeave->annualDaysUsed();
+
+        $dayStartedWorking = $calculateAnnualLeave->jobStartDate();
     }
 }
