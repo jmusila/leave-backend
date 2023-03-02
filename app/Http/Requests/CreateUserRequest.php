@@ -13,7 +13,7 @@ class CreateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class CreateUserRequest extends FormRequest
             'phone_number' => ['filled', 'string', 'unique:users'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:8'],
-            'password_confirmation' => ['string', 'min:8'],
+            'password_confirmation' => ['required', 'string', 'min:8'],
         ];
     }
 }
