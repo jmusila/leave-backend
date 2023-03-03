@@ -16,7 +16,7 @@ class UserData implements Arrayable
         public string $phone_number
     ) {
     }
-
+ 
     public static function fromArray(array $data): self
     {
         return new self(
