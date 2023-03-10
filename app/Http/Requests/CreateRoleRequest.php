@@ -13,7 +13,7 @@ class CreateRoleRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->authorize('create_role');
+        return $this->user()->can('manage_roles_and_permissions');
     }
 
     /**

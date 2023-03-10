@@ -7,8 +7,7 @@ return [
         'create_user',
         'update_user',
         'ban_user',
-        'create_role',
-        'create_permission',
+        'manage_roles_and_permissions',
     ],
     Roles::NORMAL_USER => [
         'update_profile',
