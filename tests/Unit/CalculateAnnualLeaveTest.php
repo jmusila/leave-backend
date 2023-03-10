@@ -2,9 +2,8 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
-class CalculateAnnualLeaveTest extends TestCase
-{
+it('can calculate annual leave and return results', function () {
     
-}
+});
