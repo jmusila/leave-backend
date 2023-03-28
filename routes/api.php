@@ -22,4 +22,5 @@ Route::controller(LeaveCalculatorController::class)->group(function () {
 
 Route::controller(UserController::class)->group(function () {
     Route::post('create-user', 'register');
+    Route::get('list-users', 'index');
 });
