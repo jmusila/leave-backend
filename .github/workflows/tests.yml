@@ -19,6 +19,7 @@ jobs:
  
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        run: php artisan key:generate
  
       - name: Tests
         run: ./vendor/bin/pest
