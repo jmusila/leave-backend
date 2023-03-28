@@ -1,1 +1,1 @@
-![example workflow](https://github.com/github/docs/actions/workflows/tests.yml/badge.svg)
+![example workflow](https://github.com/jmusila/leave-backend/actions/workflows/tests/badge.svg)
