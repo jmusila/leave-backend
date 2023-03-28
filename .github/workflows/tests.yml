@@ -12,10 +12,17 @@ jobs:
  
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
+        env:
+          XDEBUG_MODE: coverage
+
         with:
           php-version: 8.0
           tools: composer:v2
           coverage: xdebug
+          bootstrap: vendor/autoload.php
+          configuration: phpunit.xml
+          php_extensions: xdebug
+          args: tests --coverage-clover ./coverage.xml
  
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -24,23 +31,13 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
-
-      - name: PHPUnit Tests
-       uses: php-actions/phpunit@v3
-       env:
-         XDEBUG_MODE: coverage
-       with:
-         bootstrap: vendor/autoload.php
-         configuration: phpunit.xml
-         php_extensions: xdebug
-         args: tests --coverage-clover ./coverage.xml
  
       - name: Tests
         run: ./vendor/bin/pest
 
       - name: Upload to Codecov
-       uses: codecov/codecov-action@v2
-       with:
-         token: ${{ secrets.CODE_COV_TOKEN }}
-         files: ./coverage.xml
-         verbose: true
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODE_COV_TOKEN }}
+          files: ./coverage.xml
+          verbose: true
