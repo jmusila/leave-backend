@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Notifications\Auth\NewUserCreatedNotification;
+use App\Notifications\Auth\VerifyEmail;
 use Illuminate\Auth\Passwords\PasswordBroker;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -46,9 +47,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function sendVerificationNotification($user)
+    public function sendEmailVerificationNotification()
     {
-        $token = app(PasswordBroker::class)->createToken($user);
-        $user->notify(new NewUserCreatedNotification($token));
+        $this->notify(new VerifyEmail());
     }
 }

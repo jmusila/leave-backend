@@ -6,17 +6,17 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\URL;
 
-class NewUserCreatedNotification extends Notification implements ShouldQueue
+class VerifyEmail extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $token;
-
-    public function __construct($token)
+    public function __construct()
     {
-        $this->token = $token;
     }
 
     /**
@@ -41,13 +41,11 @@ class NewUserCreatedNotification extends Notification implements ShouldQueue
         $url = $this->createUrl($notifiable);
 
         return (new MailMessage())
-                    ->subject(Lang::get("Welcome {$notifiable->first_name}"))
-                    ->greeting(Lang::get("Dear {$notifiable->first_name}"))
-                    ->line(Lang::get("Welcome to Leave calculator. To activate this account, please click on the button below."))
-                    ->action(Lang::get('Verify Account'), $url)
-                    ->line(Lang::get('This link will expire in :count hours.', ['count' => config('auth.passwords.' . config('auth.defaults.passwords') . '.expire')/60]))
-                    ->line(Lang::get('If you are not sure about this then no further action is required.'))
-                    ->line(Lang::get("Best Regards, Leave Calculator Team."));
+            ->subject(Lang::get('Verify Email Address'))
+            ->line(Lang::get('Please click the button below to verify your email address.'))
+            ->action(Lang::get('Verify Email Address'), $url)
+            ->line(Lang::get('If you did not create an account, no further action is required.'))
+            ->line(Lang::get("Best Regards, Leave Calculator Team."));
     }
 
     /**
@@ -66,6 +64,17 @@ class NewUserCreatedNotification extends Notification implements ShouldQueue
 
     private function createUrl($notifiable)
     {
-        return config('app.frontend_url') . '/auth/verify-account' . '?token=' . $this->token . '&email=' . $notifiable->getEmailForVerification();
+        $url = config('app.frontend_url') . '/#/auth/verify-email?verificationURL=';
+
+        $temporarySignedUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+            [
+                'id' => $notifiable->getKey(),
+                'hash' => sha1($notifiable->getEmailForVerification()),
+            ]
+        );
+
+        return $url . $temporarySignedUrl;
     }
 }
