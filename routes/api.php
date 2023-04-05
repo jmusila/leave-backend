@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LeaveCalculatorController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,5 @@ Route::controller(UserController::class)->group(function () {
     Route::post('create-user', 'register');
     Route::get('list-users', 'index');
 });
+
+Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
