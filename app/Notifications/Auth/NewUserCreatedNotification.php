@@ -6,19 +6,17 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Lang;
 
 class NewUserCreatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected $token;
+
+    public function __construct($token)
     {
-        //
+        $this->token = $token;
     }
 
     /**
@@ -40,7 +38,8 @@ class NewUserCreatedNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        return (new MailMessage())
+                    ->subject(Lang::get("Hello {}"))
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
